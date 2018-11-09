@@ -5,4 +5,4 @@ Will comprise ORM entities, web services and Vue components.
 
 * Laravel 5.7
 * Doctrine ORM 2.5
-* VueJS 2
+* Vue.js 2
