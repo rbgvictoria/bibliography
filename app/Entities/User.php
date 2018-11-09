@@ -1,0 +1,115 @@
+<?php
+
+namespace App\Entities;
+
+use App\Entities\Traits\UsesPasswordGrant;
+use Doctrine\ORM\Mapping as ORM;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Laravel\Passport\HasApiTokens;
+use LaravelDoctrine\ORM\Auth\Authenticatable;
+use LaravelDoctrine\ORM\Notifications\Notifiable;
+
+
+/**
+ * @ORM\Entity(repositoryClass="UserRepository")
+ * @ORM\Table(name="users")
+ */
+class User implements AuthenticatableContract, CanResetPasswordContract
+{
+
+    use Authenticatable, CanResetPassword, Notifiable, HasApiTokens, UsesPasswordGrant;
+
+    /**
+     * @var int
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(type="integer")
+     */
+    protected $id;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", unique=true)
+     */
+    protected $email;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string",nullable=false)
+     */
+    protected $name;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="Agent", mappedBy="user")
+     * @var \App\Entities\Agent
+     */
+    protected $agent;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getKey()
+    {
+        return $this->getId();
+    }
+    
+    /**
+     * 
+     * @return \App\Entities\Agent
+     */
+    public function getAgent()
+    {
+        return $this->agent;
+    }
+    
+    /**
+     * 
+     * @param \App\Entities\Agent $agent
+     */
+    public function setAgent($agent)
+    {
+        $this->agent = $agent;
+    }
+}
