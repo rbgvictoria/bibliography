@@ -13,7 +13,7 @@ use LaravelDoctrine\ORM\Notifications\Notifiable;
 
 
 /**
- * @ORM\Entity(repositoryClass="UserRepository")
+ * @ORM\Entity(repositoryClass="\App\Repositories\UserRepository")
  * @ORM\Table(name="users")
  */
 class User implements AuthenticatableContract, CanResetPasswordContract

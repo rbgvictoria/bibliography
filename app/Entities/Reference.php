@@ -24,7 +24,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Description of Reference
  * 
- * @ORM\Entity(repositoryClass="ReferenceRepository")
+ * @ORM\Entity(repositoryClass="\App\Repositories\ReferenceRepository")
  * @ORM\Table(name="`references`", indexes={@ORM\Index(name="references_citation_idx", columns={"citation"}), @ORM\Index(name="references_citation_html_idx", columns={"citation_html"})})
  *
  * @author Niels.Klazenga <Niels.Klazenga at rbg.vic.gov.au>

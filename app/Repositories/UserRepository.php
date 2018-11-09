@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-namespace App\Entities;
+namespace App\Repositories;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -29,7 +29,7 @@ class UserRepository extends EntityRepository {
 
     public function findForPassport($userId)
     {
-        $userRepository = $this->getEntityManager()->getRepository('User');
+        $userRepository = $this->getEntityManager()->getRepository('\App\Entities\User');
         return $userRepository->findOneByEmail($userId);
     }
 }
