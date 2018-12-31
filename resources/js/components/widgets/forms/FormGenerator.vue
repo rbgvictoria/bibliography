@@ -5,8 +5,8 @@
         :key="index"
         :is="staticForm ? 'StaticControl' : field.fieldType"
         :value="formData[field.name]"
-        :labelWidth="field.labelWidth ? field.labelWidth : labelWidth"
-        :controlWidth="field.controlWidth ? field.controlWidth : controlWidth"
+        :labelWidth="field.labelWidth || labelWidth"
+        :controlWidth="field.controlWidth || controlWidth"
         @input="updateForm(field.name, $event)"
         @selected="onSelected"
         v-bind="field">
