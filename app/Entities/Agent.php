@@ -24,7 +24,7 @@ use Laravel\Passport\Bridge\User;
 /**
  * Class Agent
  * @author Niels Klazenga <Niels.Klazenga at rbg.vic.gov.au>
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="\App\Repositories\AgentRepository")
  * @ORM\Table()
  */
 class Agent extends ClassBase

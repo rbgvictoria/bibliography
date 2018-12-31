@@ -18,5 +18,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('references/{reference}', 'API\\ReferenceController@show');
+Route::get('citations', 'API\\ReferenceController@getCitations');
+Route::get('autocomplete/reference', 'API\\ReferenceController@autocomplete');
+Route::get('autocomplete/author', 'API\\AuthorController@autocomplete');
+Route::get('autocomplete/journal', 'API\\ReferenceController@autocompleteJournal');
+Route::get('autocomplete/book', 'API\\ReferenceController@autocompleteBook');
 
 Route::middleware('auth:api')->put('admin/updateCaches', 'API\\AdminController@updateCaches');

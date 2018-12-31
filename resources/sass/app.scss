@@ -1,14 +1,40 @@
-
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-
 // Variables
-@import 'variables';
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+$font-family-sans-serif:  "Gotham A", "Gotham B", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+$brand-primary: rgb(187, 157, 19);
+$brand-dark-background: rgb(215, 187, 68);
+
+$body-bg: rgb(241, 235, 208);
+$text-color: rgb(65, 70, 63);
+$link-color: #bb9d13;
+
+$gray-dark: rgb(65, 70, 63);
+$gray-light: #999;
+$gray-lighter: #bbb;
+$border-color: $gray-lighter;
+$table-border-color: $border-color;
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-}
+@import "mixins";
+@import "custom";
+@import "names";
+
+@import "banner";
+@import "home-page";
+@import "search";
+
+@import "classification";
+@import "detail-page";
+@import "images";
+@import "checklist";
+@import "glossary";
+@import "static-pages";
+
+@import "footer";
+
+@import "vicflora-admin";
+@import "keybase";
+@import "modal";

@@ -12,9 +12,18 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('app');
+});
+
+Route::get('/test', function () {
+    return view('app');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('references', 'ReferenceController')->only(['index', 'show']);
+
+Route::middleware('auth.api')->resource('references', 'ReferenceController')
+        ->except(['index', 'show']);

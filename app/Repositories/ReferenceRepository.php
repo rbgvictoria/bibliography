@@ -18,15 +18,21 @@
 
 namespace App\Repositories;
 
-use App\Entities\Reference;
 use Doctrine\ORM\EntityRepository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use LaravelDoctrine\ORM\Pagination\PaginatesFromParams;
+use Doctrine\ORM\QueryBuilder;
 
 /**
- * Description of ReferenceRepository
+ * Description of ImageRepository
  *
- * @author Niels.Klazenga <Niels.Klazenga at rbg.vic.gov.au>
+ * @author nklazenga
  */
 class ReferenceRepository extends EntityRepository {
+    
+    use PaginatesFromParams;
+    
+    protected $parameters;
     
     /**
      * 
@@ -123,5 +129,71 @@ class ReferenceRepository extends EntityRepository {
                 break;
         }
         return $str;
+    }
+    
+    /**
+     * 
+     * @param array $params
+     * @param int $perPage
+     * @param int $page
+     * @return LengthAwarePaginator|array
+     */
+    public function getCitations($params, $perPage=20, $page=1)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('r')->from('\App\Entities\Reference', 'r')
+                ->join('r.referenceType', 'rt');
+        $this->parameters = [];
+        if (isset($params['filter'])) {
+            $qb = $this->searchCriteria($qb, $params['filter']);
+        }
+        $qb->addOrderBy('r.contributorsCache');
+        $qb->addOrderBy('r.publicationYear');
+        $query = $qb->getQuery();
+        if ($this->parameters) {
+            $query->setParameters($this->parameters);
+        }
+        if (!$perPage) {
+            return $query->getResult();
+        }
+        return $this->paginate($query, $perPage, $page);
+    }
+    
+    protected function searchCriteria(QueryBuilder $qb, $filters)
+    {
+        if (isset($filters['author'])) {
+            $qb->andWhere($qb->expr()->like('r.contributorsCache', ':author'));
+            $this->parameters['author'] = $filters['author'] . '%';
+        }
+        if (isset($filters['year'])) {
+            $qb->andWhere($qb->expr()->eq('r.publicationYear', ':year'));
+            $this->parameters['year'] = $filters['year'];
+        }
+        if (isset($filters['type'])) {
+            $qb->andWhere($qb->expr()->in('rt.name', ':type'));
+            $this->parameters['type'] = (strpos($filters['type'], ',') !== false) 
+                    ? preg_split('/, ?/', $filters['type']) : $filters['type'];
+        }
+        return $qb;
+    }
+    
+    public function searchTitle($title, $type=null)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('r')
+                ->from('\App\Entities\Reference', 'r')
+                ->andWhere($qb->expr()->like('r.title', ':title'))
+                ->orderBy('r.title');
+        $params = [
+            'title' => $title . '%'
+        ];
+        if ($type) {
+            $qb->join('r.referenceType', 'ty')
+                    ->andWhere($qb->expr()->in('ty.name', ':type'));
+            $params['type'] = $type;
+        }
+        $query = $qb->getQuery();
+        $query->setParameters($params);
+        return $query->getResult();
     }
 }

@@ -23,7 +23,7 @@ use Swagger\Annotations as SWG;
  *       email="Niels.Klazenga@rbg.vic.gov.au"
  *     )
  *   ),
- *   host="hortflora.homestead",
+ *   host="hortflora.localhost",
  *   basePath="/api",
  *   schemes={"http"},
  *   consumes={"application/json", "multipart/form-data"},
@@ -31,8 +31,8 @@ use Swagger\Annotations as SWG;
  *   @SWG\SecurityScheme(
  *     securityDefinition="hortflora_auth",
  *     type="oauth2",
- *     authorizationUrl="http://hortflora.homestead/oauth/authorize",
- *     tokenUrl="http://hortflora.homestead/oauth/token",
+ *     authorizationUrl="http://hortflora.localhost/oauth/authorize",
+ *     tokenUrl="http://hortflora.localhost/oauth/token",
  *     flow="accessCode"
  *   ),
  *   @SWG\Tag(
