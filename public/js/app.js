@@ -44311,7 +44311,7 @@ var index_esm = {
       if (params.page) {
         apiParams.page = params.page;
       }
-      return axios.get("http://reference.localhost/api" + '/citations', {
+      return axios.get("http://reference.homestead/api" + '/citations', {
         params: apiParams
       }).then(function (response) {
         var newCollection = [];
@@ -44430,7 +44430,7 @@ var Pagination = function () {
 
   actions: {
     get: function get(context, id) {
-      return axios.get("http://reference.localhost/api" + '/references/' + id).then(function (response) {
+      return axios.get("http://reference.homestead/api" + '/references/' + id).then(function (response) {
         context.commit('storeReference', new __WEBPACK_IMPORTED_MODULE_1__models_ReferenceModel__["a" /* default */](response.data));
         return Promise.resolve(context.state.reference);
       }).catch(function (error) {
@@ -44439,7 +44439,7 @@ var Pagination = function () {
       });
     },
     updateParent: function updateParent(context, id) {
-      return axios.get("http://reference.localhost/api" + '/references/' + id).then(function (response) {
+      return axios.get("http://reference.homestead/api" + '/references/' + id).then(function (response) {
         context.commit('updateParent', new __WEBPACK_IMPORTED_MODULE_1__models_ReferenceModel__["a" /* default */](response.data));
         return Promise.resolve(context.state.reference.parent);
       }).catch(function (error) {
@@ -51117,6 +51117,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -51124,13 +51128,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "Reference",
+  name: "ReferenceForm",
   components: { FormGenerator: __WEBPACK_IMPORTED_MODULE_0__components_widgets_forms_FormGenerator___default.a },
   data: function data() {
     return {
       labelWidth: 'col-md-2',
       controlWidth: 'col-md-10',
-      vuexAction: 'reference/updateProperty'
+      vuexAction: 'reference/updateProperty',
+      editable: false
     };
   },
 
@@ -51166,6 +51171,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           });
         }
       }
+    },
+    toggleEditable: function toggleEditable() {
+      this.editable = !this.editable;
     }
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
@@ -51265,7 +51273,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "FormGenerator",
   components: { NumberInput: __WEBPACK_IMPORTED_MODULE_0__NumberInput___default.a, SelectList: __WEBPACK_IMPORTED_MODULE_1__SelectList___default.a, TextInput: __WEBPACK_IMPORTED_MODULE_2__TextInput___default.a, StaticControl: __WEBPACK_IMPORTED_MODULE_3__StaticControl___default.a, AutocompleteControl: __WEBPACK_IMPORTED_MODULE_4__AutocompleteControl___default.a },
-  props: ["schema", "value", 'vuexAction', 'labelWidth', 'controlWidth'],
+  props: {
+    schema: Array,
+    value: Object,
+    vuexAction: String,
+    labelWidth: String,
+    controlWidth: {
+      type: String,
+      default: 'col-md-10'
+    },
+    staticForm: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: function data() {
     return {
       formData: this.value || {}
@@ -51730,15 +51751,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'StaticControl',
   props: ['label', 'value', 'labelWidth', 'controlWidth'],
   data: function data() {
     return {
-      labelClasses: [this.labelWidth || 'col-md-2', 'control-label', 'text-left'],
-      controlDivClasses: [this.controlWidth || 'col-md-10']
+      labelClasses: [this.labelWidth || 'col-md-2', 'control-label', 'text-left']
     };
+  },
+
+  computed: {
+    controlDivClasses: function controlDivClasses() {
+      return [this.controlWidth || 'col-md-10'];
+    }
   }
 });
 
@@ -51753,12 +51783,31 @@ var render = function() {
   return _c("div", { staticClass: "form-group" }, [
     _c("label", { class: _vm.labelClasses }, [_vm._v(_vm._s(_vm.label))]),
     _vm._v(" "),
-    _c("div", { class: _vm.controlDivClasses }, [
-      _c("p", {
-        staticClass: "form-control-static",
-        domProps: { innerHTML: _vm._s(_vm.value) }
-      })
-    ])
+    _vm.value
+      ? _c("div", { class: _vm.controlDivClasses }, [
+          typeof _vm.value === "string"
+            ? _c("p", {
+                staticClass: "form-control-static",
+                domProps: { innerHTML: _vm._s(_vm.value) }
+              })
+            : _c(
+                "p",
+                { staticClass: "form-control-static" },
+                [
+                  _vm._v("\n      " + _vm._s(_vm.value.label) + "\n      "),
+                  _c("router-link", {
+                    attrs: {
+                      to: { name: "reference", params: { id: _vm.value.value } }
+                    },
+                    domProps: {
+                      innerHTML: _vm._s("<i class='fa fa-search'></i>")
+                    }
+                  })
+                ],
+                1
+              )
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -52009,15 +52058,17 @@ var render = function() {
     "div",
     _vm._l(_vm.schema, function(field, index) {
       return _c(
-        field.fieldType,
+        _vm.staticForm ? "StaticControl" : field.fieldType,
         _vm._b(
           {
             key: index,
             tag: "component",
             attrs: {
               value: _vm.formData[field.name],
-              labelWidth: field.labelWidth || _vm.labelWidth,
-              controlWidth: field.controlWidth || _vm.controlWidth
+              labelWidth: field.labelWidth ? field.labelWidth : _vm.labelWidth,
+              controlWidth: field.controlWidth
+                ? field.controlWidth
+                : _vm.controlWidth
             },
             on: {
               input: function($event) {
@@ -52151,7 +52202,7 @@ articleSchema.sort(function (a, b) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSchema__ = __webpack_require__(7);
 
 
-var fields = ['type', 'author', 'publicationYear', 'title', 'book', 'publisher', 'placeOfPublication', 'pageStart', 'pageEnd', 'pages', 'citationHtml'];
+var fields = ['type', 'author', 'publicationYear', 'title', 'book', 'pageStart', 'pageEnd', 'pages', 'citationHtml'];
 
 var chapterSchema = __WEBPACK_IMPORTED_MODULE_0__defaultSchema__["a" /* default */].filter(function (field) {
   return fields.indexOf(field.name) > -1;
@@ -52202,6 +52253,17 @@ var render = function() {
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "text-right" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              on: { click: _vm.toggleEditable }
+            },
+            [_vm._v(_vm._s(_vm.editable ? "View" : "Edit"))]
+          )
+        ]),
+        _vm._v(" "),
         _vm.formData
           ? _c("h2", [
               _vm._v(
@@ -52232,7 +52294,8 @@ var render = function() {
                 value: _vm.formData,
                 labelWidth: _vm.labelWidth,
                 controlWidth: _vm.controlWidth,
-                vuexAction: _vm.vuexAction
+                vuexAction: _vm.vuexAction,
+                staticForm: !_vm.editable
               },
               on: { input: _vm.updateState, selected: _vm.changeParent }
             })

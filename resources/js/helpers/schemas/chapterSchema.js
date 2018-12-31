@@ -6,8 +6,6 @@ const fields = [
   'publicationYear',
   'title',
   'book',
-  'publisher',
-  'placeOfPublication',
   'pageStart',
   'pageEnd',
   'pages',

@@ -3,10 +3,10 @@
     <component
         v-for="(field, index) in schema"
         :key="index"
-        :is="field.fieldType"
+        :is="staticForm ? 'StaticControl' : field.fieldType"
         :value="formData[field.name]"
-        :labelWidth="field.labelWidth || labelWidth"
-        :controlWidth="field.controlWidth || controlWidth"
+        :labelWidth="field.labelWidth ? field.labelWidth : labelWidth"
+        :controlWidth="field.controlWidth ? field.controlWidth : controlWidth"
         @input="updateForm(field.name, $event)"
         @selected="onSelected"
         v-bind="field">
@@ -25,7 +25,20 @@ import Reference from "../../../models/ReferenceModel"
 export default {
   name: "FormGenerator",
   components: { NumberInput, SelectList, TextInput, StaticControl, AutocompleteControl },
-  props: ["schema", "value", 'vuexAction', 'labelWidth', 'controlWidth'],
+  props: {
+    schema: Array,
+    value: Object,
+    vuexAction: String,
+    labelWidth: String,
+    controlWidth: {
+      type: String,
+      default: 'col-md-10'
+    },
+    staticForm: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       formData: this.value || {}

@@ -2,6 +2,9 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-12">
+        <div class="text-right">
+          <button class="btn btn-primary" @click="toggleEditable">{{editable ? 'View' : 'Edit'}}</button>
+        </div>
         <h2 v-if="formData">Reference: {{ `${formData.author} (${formData.publicationYear})` }}
             <span class="h4"><small>{{ formData.id }}</small></span></h2>
         <br/>
@@ -12,6 +15,7 @@
               :labelWidth="labelWidth"
               :controlWidth="controlWidth"
               :vuexAction="vuexAction"
+              :staticForm="!editable"
               @input="updateState"
               @selected="changeParent"
               ></form-generator>
@@ -28,13 +32,14 @@ import schema from '../helpers/formConfig'
 import Reference from '../models/ReferenceModel'
 
 export default {
-  name: "Reference",
+  name: "ReferenceForm",
   components: { FormGenerator },
   data() {
     return {
       labelWidth: 'col-md-2',
       controlWidth: 'col-md-10',
-      vuexAction: 'reference/updateProperty'
+      vuexAction: 'reference/updateProperty',
+      editable: false
     }
   },
   computed: {
@@ -71,6 +76,9 @@ export default {
             })
         }
       }
+    },
+    toggleEditable() {
+      this.editable = !this.editable
     }
   },
   beforeRouteUpdate(to, from, next) {
