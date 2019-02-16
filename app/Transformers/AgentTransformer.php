@@ -20,20 +20,81 @@ namespace App\Transformers;
 
 /**
  * Description of AgentTransformer
+ * 
+ * @OA\Schema(
+ *   schema="Agent",
+ *   type="object"
+ * )
  *
  * @author Niels.Klazenga <Niels.Klazenga at rbg.vic.gov.au>
  */
 class AgentTransformer extends OrmTransformer {
     
+    protected $defaultIncludes = [
+        'groupMembers'
+    ];
+    
+    /**
+     * @OA\Property(
+     *   property="id",
+     *   type="integer",
+     *   format="int32"
+     * ).
+     * @OA\Property(
+     *   property="type",
+     *   type="string"
+     * ),
+     * @OA\Property(
+     *   property="name",
+     *   type="string"
+     * ),
+     * @OA\Property(
+     *   property="lastName",
+     *   type="string"
+     * ),
+     * @OA\Property(
+     *   property="initials",
+     *   type="string"
+     * ),
+     *
+     * @param \App\Entities\Agent $agent
+     * @return array
+     */
     public function transform(\App\Entities\Agent $agent)
     {
         return [
-            'id' => $agent->getGuid(),
+            'id' => $agent->getId(),
             'type' => $agent->getAgentType()->getName(),
             'name' => $agent->getName(),
             'lastName' => $agent->getLastName(),
             'firstName' => $agent->getFirstName(),
             'initials' => $agent->getInitials(),
         ];
+    }
+    
+    /**
+     * @OA\Property(
+     *   property="groupMembers",
+     *   type="array",
+     *   @OA\Items(
+     *     ref="#/components/schemas/GroupAgent"
+     *   )
+     * )
+     * 
+     * @param \App\Entities\Agent $agent
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function includeGroupMembers(\App\Entities\Agent $agent)
+    {
+        if ($agent->getAgentType() == $this->em
+                ->getRepository('\App\Entities\AgentType')
+                ->findOneBy(['name' => 'Group'])) {
+            $members = $agent->getGroupMembers();
+            if ($members) {
+                return new \League\Fractal\Resource\Collection($agent
+                        ->getGroupMembers(), new GroupAgentTransformer, 
+                        'group-agents');
+            }
+        }
     }
 }

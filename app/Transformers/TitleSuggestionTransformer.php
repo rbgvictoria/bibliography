@@ -18,19 +18,23 @@
 
 namespace App\Transformers;
 
-use League\Fractal;
-
 /**
- * Description of RefTitleTransformer
- *
+ * Description of TitleSuggestionTransformer
+ * 
  * @author Niels.Klazenga <Niels.Klazenga at rbg.vic.gov.au>
  */
-class TitleSuggestionTransformer extends Fractal\TransformerAbstract {
+class TitleSuggestionTransformer extends OrmTransformer {
     
+    /**
+     *
+     * @param \App\Entities\Reference $ref
+     * @return array
+     */
     public function transform(\App\Entities\Reference $ref) {
         return [
-            'value' => $ref->getGuid(),
+            'value' => $ref->getId(),
             'label' => $ref->getTitle(),
+            'display' => $ref->getTitle(),
         ];
     }
 }

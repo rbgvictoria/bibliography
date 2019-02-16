@@ -1,11 +1,11 @@
 export default class Agent {
 
   constructor (ag = {}) {
-    this.id = ag.id,
-    this.type = ag.type,
-    this.name = ag.name,
-    this.lastName = ag.lastName,
-    this.firstName = ag.firtsName,
-    this.initials = ag.initials
+    this.id = ag.id || null
+    this.type = ag.type || 'Person'
+    this.name = ag.name || null
+    this.lastName = ag.lastName || null
+    this.firstName = ag.firtsName || null
+    this.initials = ag.initials || null
   }
 }

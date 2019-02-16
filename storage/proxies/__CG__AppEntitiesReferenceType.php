@@ -64,10 +64,10 @@ class ReferenceType extends \App\Entities\ReferenceType implements \Doctrine\ORM
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'parent', 'parentIsOptional', 'useParentDetails', 'name', 'uri', 'label', 'description', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
+            return ['__isInitialized__', 'parent', 'parentIsOptional', 'useParentDetails', 'name', 'uri', 'label', 'description', 'id', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
         }
 
-        return ['__isInitialized__', 'parent', 'parentIsOptional', 'useParentDetails', 'name', 'uri', 'label', 'description', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
+        return ['__isInitialized__', 'parent', 'parentIsOptional', 'useParentDetails', 'name', 'uri', 'label', 'description', 'id', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
     }
 
     /**

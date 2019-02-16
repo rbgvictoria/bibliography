@@ -18,6 +18,7 @@
 
 namespace App\Entities;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Laravel\Passport\Bridge\User;
 
@@ -39,7 +40,7 @@ class Agent extends ClassBase
 
   /**
    * @var string
-   * @ORM\Column(length=128)
+   * @ORM\Column(type="text")
    */
   protected $name;
 
@@ -80,19 +81,17 @@ class Agent extends ClassBase
   protected $email;
 
   /**
-   * @ORM\ManyToOne(targetEntity="Agent")
-   * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
-   * @var Agent
+   * @ORM\OneToMany(targetEntity="GroupAgent", mappedBy="group")
+   * @var \Doctrine\Common\Collections\ArrayCollection
    */
-  protected $group;
-
-  /**
-   * @ORM\ManyToOne(targetEntity="Agent")
-   * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
-   * @var Agent
-   */
-  protected $organization;
+  protected $groupMembers;
   
+  /**
+   * @ORM\OneToMany(targetEntity="OrganizationAgent", mappedBy="organization")
+   * @var \Doctrine\Common\Collections\ArrayCollection
+   */
+  protected $organizationMembers;
+
   /**
    * @ORM\OneToOne(targetEntity="User", inversedBy="agent")
    * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
@@ -247,39 +246,39 @@ class Agent extends ClassBase
   }
 
   /**
-   *
-   * @return Agent
+   * 
+   * @return \Doctrine\Common\Collections\ArrayCollection
    */
-  public function getOrganization()
+  public function getOrganizationMembers()
   {
-      return $this->organization;
+      return $this->organizationMembers;
   }
 
   /**
-   *
-   * @param Agent $organization
+   * 
+   * @param \App\Entities\OrganizationAgent $member
    */
-  public function setOrganization($organization)
+  public function addOrganizationMember(OrganizationAgent $member)
   {
-      $this->organization = $organization;
+      $this->organizationMembers[] = $member;
   }
 
   /**
-   *
-   * @return Agent
+   * 
+   * @return \Doctrine\Common\Collections\ArrayCollection
    */
-  public function getGroup()
+  public function getGroupMembers()
   {
-      return $this->group;
+      return $this->groupMembers;
   }
 
   /**
-   *
-   * @param Agent $group
+   * 
+   * @param \App\Entities\GroupAgent $member
    */
-  public function setGroup($group)
+  public function addGroupMember(GroupAgent $member)
   {
-      $this->group = $group;
+      $this->groupMembers[] = $member;
   }
 
 }

@@ -7,88 +7,25 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use League\Fractal;
 use Ramsey\Uuid\Uuid;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 
 /**
  * The ApiController class is the superclass of all API controllers; it contains
  * some methods that are used in all these controllers
  *
- * @SWG\Swagger(
- *   @SWG\Info(
- *     title="HortFlora API",
+ * @OA\OpenApi(
+ *   @OA\Info(
+ *     title="Bibliography API",
  *     description="",
  *     version="1.0.0",
- *     @SWG\Contact(
+ *     @OA\Contact(
  *       name="Niels Klazenga, Royal Botanic Gardens Victoria",
  *       email="Niels.Klazenga@rbg.vic.gov.au"
  *     )
  *   ),
- *   host="hortflora.homestead",
- *   basePath="/api",
- *   schemes={"http"},
- *   consumes={"application/json", "multipart/form-data"},
- *   produces={"application/json", "application/vnd.api+json"},
- *   @SWG\SecurityScheme(
- *     securityDefinition="hortflora_auth",
- *     type="oauth2",
- *     authorizationUrl="http://hortflora.homestead/oauth/authorize",
- *     tokenUrl="http://hortflora.homestead/oauth/token",
- *     flow="accessCode"
- *   ),
- *   @SWG\Tag(
- *     name="Search"
- *   ),
- *   @SWG\Tag(
- *     name="Taxa"
- *   ),
- *   @SWG\Tag(
- *     name="Cultivars",
- *     description="Cultivars are treated differently from Taxa in HortFlora: Cultivars do not have ranks, or parents, or children, but they do belong to a Taxon."
- *   ),
- *   @SWG\Tag(
- *     name="Horticultural Groups"
- *   ),
- *   @SWG\Tag(
- *     name="Names",
- *     description="Names for all types of ""Taxa"""
- *   ),
- *   @SWG\Tag(
- *     name="Vernacular Names"
- *   ),
- *   @SWG\Tag(
- *     name="Treatments"
- *   ),
- *   @SWG\Tag(
- *     name="Treatment Versions"
- *   ),
- *   @SWG\Tag(
- *     name="Images"
- *   ),
- *   @SWG\Tag(
- *     name="Occurrences"
- *   ),
- *   @SWG\Tag(
- *     name="Events",
- *     description="Events where the images were taken"
- *   ),
- *   @SWG\Tag(
- *     name="Locations",
- *     description="Locations where the images were taken"
- *   ),
- *   @SWG\Tag(
- *     name="Regions"
- *   ),
- *   @SWG\Tag(
- *     name="References"
- *   ),
- *   @SWG\Tag(
- *     name="Agents"
- *   ),
- *   @SWG\Tag(
- *     name="Vocabularies"
- *   ),
- *   @SWG\Tag(
- *     name="Changes"
+ *   @OA\Server(
+ *     description="",
+ *     url="http://reference.homestead/api"
  *   )
  * )
  */
@@ -146,7 +83,7 @@ class ApiController extends Controller
      */
     public function apiDocs()
     {
-        $swagger = \Swagger\scan(app_path());
+        $swagger = \OpenApi\scan(app_path());
         return response()->json($swagger);
     }
     

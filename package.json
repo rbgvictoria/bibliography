@@ -25,6 +25,7 @@
         "vuex": "^3.0.1"
     },
     "dependencies": {
-        "font-awesome": "^4.7.0"
+        "font-awesome": "^4.7.0",
+        "swagger-ui-dist": "^3.20.4"
     }
 }

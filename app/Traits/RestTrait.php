@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2018 Royal Botanic Gardens Victoria.
+ * Copyright 2017 Niels Klazenga, Royal Botanic Gardens Victoria.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,32 @@
  * limitations under the License.
  */
 
-namespace App\Entities;
+namespace App\Traits;
 
-use Doctrine\ORM\Mapping as ORM;
+use Illuminate\Http\Request;
 
 /**
- * Description of ContributorRole
- * 
- * @ORM\Entity()
- * @ORM\Table()
- *
- * @author Niels.Klazenga <Niels.Klazenga at rbg.vic.gov.au>
+ * RestTrait
  */
-class ContributorRole extends Vocab {
-    
+trait RestTrait
+{
+
+    /**
+     * Determines if request is an api call.
+     *
+     * If the request URI contains '/api/v'.
+     *
+     * @param Request $request
+     * @return bool
+     */
+    protected function isApiCall(Request $request)
+    {
+        return strpos($request->getUri(), '/api/') !== false;
+    }
+
+    protected function testResponse() 
+    {
+        return response()->json(['message' => 'hello']);
+    }
+
 }

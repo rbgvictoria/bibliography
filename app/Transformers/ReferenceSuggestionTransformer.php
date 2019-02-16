@@ -21,16 +21,39 @@ namespace App\Transformers;
 use League\Fractal;
 
 /**
- * Description of ReferenceSuggestions
+ * Description of ReferenceSuggestionTransformer
  *
+ * @OA\Schema(
+ *   schema="Suggestion",
+ *   type="object"
+ * )
+ * 
  * @author Niels.Klazenga <Niels.Klazenga at rbg.vic.gov.au>
  */
 class ReferenceSuggestionTransformer extends OrmTransformer {
     
+    /**
+     * @OA\Property(
+     *   property="value",
+     *   type="integer",
+     *   format="int32"
+     * ),
+     * @OA\Property(
+     *   property="label",
+     *   type="string"
+     * ),
+     * @OA\Property(
+     *   property="display",
+     *   type="string"
+     * )
+     *
+     * @param \App\Entities\Reference $ref
+     * @return array
+     */
     public function transform (\App\Entities\Reference $ref)
     {
         return [
-            'value' => $ref->getGuid(),
+            'value' => $ref->getId(),
             'label' => $ref->getCitation(),
             'display' => $ref->getCitationHtml()
         ];

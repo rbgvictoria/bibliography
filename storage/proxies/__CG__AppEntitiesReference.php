@@ -64,10 +64,10 @@ class Reference extends \App\Entities\Reference implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'referenceType', 'contributors', 'contributorsCache', 'created', 'publicationYear', 'title', 'shortTitle', 'parent', 'edition', 'volume', 'issue', 'number', 'pageStart', 'pageEnd', 'pages', 'numberOfPages', 'publisher', 'placeOfPublication', 'shortDescription', 'abstract', 'isbn', 'issn', 'doi', 'citation', 'citationHtml', 'url', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
+            return ['__isInitialized__', 'referenceType', 'author', 'created', 'publicationYear', 'title', 'shortTitle', 'parent', 'edition', 'volume', 'issue', 'number', 'pageStart', 'pageEnd', 'pages', 'numberOfPages', 'publisher', 'placeOfPublication', 'shortDescription', 'abstract', 'isbn', 'issn', 'doi', 'citation', 'citationHtml', 'url', 'id', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
         }
 
-        return ['__isInitialized__', 'referenceType', 'contributors', 'contributorsCache', 'created', 'publicationYear', 'title', 'shortTitle', 'parent', 'edition', 'volume', 'issue', 'number', 'pageStart', 'pageEnd', 'pages', 'numberOfPages', 'publisher', 'placeOfPublication', 'shortDescription', 'abstract', 'isbn', 'issn', 'doi', 'citation', 'citationHtml', 'url', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
+        return ['__isInitialized__', 'referenceType', 'author', 'created', 'publicationYear', 'title', 'shortTitle', 'parent', 'edition', 'volume', 'issue', 'number', 'pageStart', 'pageEnd', 'pages', 'numberOfPages', 'publisher', 'placeOfPublication', 'shortDescription', 'abstract', 'isbn', 'issn', 'doi', 'citation', 'citationHtml', 'url', 'id', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
     }
 
     /**
@@ -198,6 +198,28 @@ class Reference extends \App\Entities\Reference implements \Doctrine\ORM\Proxy\P
     /**
      * {@inheritDoc}
      */
+    public function getAuthor()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAuthor', []);
+
+        return parent::getAuthor();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAuthor($author)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAuthor', [$author]);
+
+        return parent::setAuthor($author);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getCitation()
     {
 
@@ -237,39 +259,6 @@ class Reference extends \App\Entities\Reference implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCitationHtml', [$citationHtml]);
 
         return parent::setCitationHtml($citationHtml);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getContributors()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getContributors', []);
-
-        return parent::getContributors();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addContributor(\App\Entities\Contributor $contributor)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addContributor', [$contributor]);
-
-        return parent::addContributor($contributor);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getContributorsCache()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getContributorsCache', []);
-
-        return parent::getContributorsCache();
     }
 
     /**

@@ -19,8 +19,14 @@ export default [
     ]
   },
   {
+    fieldType: "ContributorsSubform",
+    name: "contributors",
+    label: "Contributors",
+    hideInStaticMode: true
+  },
+  {
     fieldType: "StaticControl",
-    name: "author",
+    name: "authorString",
     label: "Author(s)",
   },
   {

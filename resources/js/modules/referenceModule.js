@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Reference from '../models/ReferenceModel'
+import Author from '../models/AuthorModel'
 
 export default {
   namespaced: true,
@@ -50,9 +51,47 @@ export default {
     },
     updateProperty: function(context, property) {
       context.commit('updateProperty', property)
+      if (property.name === 'contributors') {
+        context.commit('updateProperty', {
+          name: 'authorId',
+          value: null
+        })
+      }
     },
     dropParent: function(context) {
       context.commit('updateParent', {})
+    },
+    reset: (context, ref) => {
+      context.commit('storeReference', ref)
+    },
+    storeAgent: function(context, {agent, contributor}) {
+      return axios.post(`/api/agents`, agent)
+          .then(response => {
+            const contributors = context.state.reference.contributors
+            contributors[contributor.sequence].agent = response.data
+            context.commit('updateProperty', {
+              name: 'contributors',
+              value: contributors
+            })
+            context.commit('updateProperty', {
+              name: 'authorString',
+              value: Reference.getAuthorString(context.state.reference)
+            })
+          }).catch(error => {
+            console.log(error)
+          })
+
+    },
+    updateReference: function(context, reference) {
+      //delete reference.contributors
+      delete reference.authorString
+      delete reference.book
+      delete reference.journal
+      return axios.put('/api/references/' + reference.id, reference)
+          .then(response => {
+            context.commit('storeReference', new Reference(response.data))
+            return Promise.resolve(context.state.reference)
+          })
     }
   }
 }

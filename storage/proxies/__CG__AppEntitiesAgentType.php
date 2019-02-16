@@ -64,10 +64,10 @@ class AgentType extends \App\Entities\AgentType implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'name', 'uri', 'label', 'description', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
+            return ['__isInitialized__', 'name', 'uri', 'label', 'description', 'id', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
         }
 
-        return ['__isInitialized__', 'name', 'uri', 'label', 'description', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
+        return ['__isInitialized__', 'name', 'uri', 'label', 'description', 'id', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
     }
 
     /**

@@ -64,10 +64,10 @@ class Agent extends \App\Entities\Agent implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'agentType', 'name', 'firstName', 'lastName', 'initials', 'legalName', 'ipni', 'email', 'group', 'organization', 'user', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
+            return ['__isInitialized__', 'agentType', 'name', 'firstName', 'lastName', 'initials', 'legalName', 'ipni', 'email', 'groupMembers', 'organizationMembers', 'user', 'id', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
         }
 
-        return ['__isInitialized__', 'agentType', 'name', 'firstName', 'lastName', 'initials', 'legalName', 'ipni', 'email', 'group', 'organization', 'user', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
+        return ['__isInitialized__', 'agentType', 'name', 'firstName', 'lastName', 'initials', 'legalName', 'ipni', 'email', 'groupMembers', 'organizationMembers', 'user', 'id', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
     }
 
     /**
@@ -374,45 +374,45 @@ class Agent extends \App\Entities\Agent implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getOrganization()
+    public function getOrganizationMembers()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrganization', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrganizationMembers', []);
 
-        return parent::getOrganization();
+        return parent::getOrganizationMembers();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setOrganization($organization)
+    public function addOrganizationMember(\App\Entities\OrganizationAgent $member)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrganization', [$organization]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addOrganizationMember', [$member]);
 
-        return parent::setOrganization($organization);
+        return parent::addOrganizationMember($member);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getGroup()
+    public function getGroupMembers()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGroup', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGroupMembers', []);
 
-        return parent::getGroup();
+        return parent::getGroupMembers();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setGroup($group)
+    public function addGroupMember(\App\Entities\GroupAgent $member)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setGroup', [$group]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addGroupMember', [$member]);
 
-        return parent::setGroup($group);
+        return parent::addGroupMember($member);
     }
 
     /**

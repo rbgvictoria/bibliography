@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import Contributor from './ContributorModel'
 
 export default class Reference {
@@ -16,11 +17,25 @@ export default class Reference {
     this.pages = ref.pages
     this.numberOfPages = ref.numberOfPages
     this.publisher = ref.publisher
+    this.isbn = ref.isbn
+    this.issn = ref.issn
+    this.doi = ref.doi
     this.citation = ref.citation
     this.citationHtml = ref.citationHtml
-    if (ref.contributors) {
-      this.contributors = ref.contributors.data.map(contr => new Contributor(contr))
-      this.author = this.getContributorString()
+    if (ref.author) {
+      this.author = ref.author
+      this.authorString = ref.author.name
+      this.authorId = ref.author.id
+      if (ref.author.type === 'Group') {
+        this.contributors = ref.author.groupMembers.data
+            .map(contr => new Contributor(contr))
+            .sort((a, b) => {
+              return a.sequence - b.sequence
+            })
+      }
+      else {
+        this.contributors = [new Contributor(ref.author)]
+      }
 
     }
     if (this.parent && this.type === 'Chapter') {
@@ -29,29 +44,6 @@ export default class Reference {
     if (this.parent && this.type === 'Article') {
       this.journal = this.getJournal()
     }
-  }
-
-  getContributorString() {
-    const contributors = this.contributors.sort((a, b) => {
-      return a.sequence-b.sequence
-    })
-    const arr = contributors.map(contributor => {
-      let agent = contributor.agent.lastName
-      if (contributor.agent.initials) {
-        agent += ', ' + contributor.agent.initials
-      }
-      return agent
-    })
-    let str = arr.join('; ')
-    if (this.contributors[0].role === 'Editor') {
-      if (this.contributors.length === 1) {
-        str += ' (ed.)'
-      }
-      else {
-        str += ' (eds)'
-      }
-    }
-    return str
   }
 
   getBook() {
@@ -69,6 +61,16 @@ export default class Reference {
     }
   }
 
+  static getAuthorString(reference) {
+    return reference.contributors
+        .sort((a, b) => a.sequence - b.sequence)
+        .map(contr => {
+          return contr.agent.name
+        })
+        .join('; ')
+        .replace(/;([^;]*)$/,' &$1')
+  }
+
   static citationString(reference) {
     let str = ''
     switch(reference.type) {
@@ -79,7 +81,7 @@ export default class Reference {
       case 'Book':
       case 'Report':
       case 'AudioVisualDocument':
-        str += '<b/>' + reference.author + ' (' + reference.publicationYear + ').</b> '
+        str += '<b>' + reference.authorString + ' (' + reference.publicationYear + ').</b> '
         str += '<i>' + reference.title.replace(/\ *([^\*]+)\* /g, '</i> $1 <i>') + '</i>.'
         if (reference.publisher) {
           str += ' ' + reference.publisher
@@ -90,7 +92,7 @@ export default class Reference {
         }
         break;
       case 'Article':
-        str += '<b/>' + reference.author + ' (' + reference.publicationYear + ').</b> '
+        str += '<b>' + reference.authorString + ' (' + reference.publicationYear + ').</b> '
         str += reference.title.replace(/\*([^\*]+)\*/g, '<i>$1</i>') + '. '
         str += '<i>' + reference.parent.title + '</i>'
         if (reference.volume) {
@@ -111,9 +113,9 @@ export default class Reference {
         str += '.'
         break;
       case 'Chapter':
-        str += '<b/>' + reference.author + ' (' + reference.publicationYear + ').</b> '
+        str += '<b>' + reference.authorString + ' (' + reference.publicationYear + ').</b> '
         str += reference.title.replace(/\*([^\*]+)\*/g, '<i>$1</i>') + '. '
-        str += 'In: ' + reference.parent.author + ', '
+        str += 'In: ' + reference.parent.authorString + ', '
         str += '<i>' + reference.title.replace(/\ *([^\*]+)\* /g, '</i> $1 <i>') + '</i>, '
         str += 'pp. ' + reference.pageStart + '–' + reference.pageEnd + '.'
         if (reference.parent.publisher) {

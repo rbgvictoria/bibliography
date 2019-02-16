@@ -9,6 +9,11 @@
         <link rel="stylesheet" type="text/css" href="https://www.rbg.vic.gov.au/common/fonts/451576/645A29A9775E15EA2.css" />
         <link rel="stylesheet" type="text/css" href="{{ env('APP_URL') }}/css/font-awesome.css" />
         <link rel="stylesheet" type="text/css" href="{{ env('APP_URL') }}/css/app.css" />
+        <script type="text/javascript">
+            @isset($data)
+            window.bibliography_server_data = "{!! addslashes(json_encode($data)) !!}";
+            @endisset
+        </script>
     </head>
     <body class="hortflora">
         <div id="app"></div> <!-- /#app -->

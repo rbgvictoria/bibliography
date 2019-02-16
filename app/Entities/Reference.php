@@ -39,16 +39,11 @@ class Reference extends ClassBase {
     protected $referenceType;
     
     /**
-     * @ORM\OneToMany(targetEntity="Contributor", mappedBy="reference")
-     * @var \Doctrine\Common\Collections\ArrayCollection 
+     * @ORM\ManyToOne(targetEntity="Agent")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     * @var \App\Entities\Agent 
      */
-    protected $contributors;
-    
-    /**
-     * @ORM\Column(nullable=true)
-     * @var string
-     */
-    protected $contributorsCache;
+    protected $author;
     
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -188,7 +183,7 @@ class Reference extends ClassBase {
      * @var string 
      */
     protected $url;
-            
+    
     public function __construct() 
     {
         $this->contributors = new ArrayCollection();
@@ -210,6 +205,24 @@ class Reference extends ClassBase {
     public function setReferenceType(ReferenceType $referenceType)
     {
         $this->referenceType = $referenceType;
+    }
+    
+    /**
+     * 
+     * @return \App\Entities\Agent
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+    
+    /**
+     * 
+     * @param \App\Entities\Agent $author
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
     }
     
     /**
@@ -246,33 +259,6 @@ class Reference extends ClassBase {
     public function setCitationHtml($citationHtml)
     {
         $this->citationHtml = $citationHtml;
-    }
-    
-    /**
-     * 
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getContributors()
-    {
-        return $this->contributors;
-    }
-    
-    /**
-     * 
-     * @param \App\Entities\Contributor $contributor
-     */
-    public function addContributor(Contributor $contributor)
-    {
-        $this->contributors[] = $contributor;
-    }
-    
-    /**
-     * 
-     * @return string
-     */
-    public function getContributorsCache()
-    {
-        return $this->contributorsCache;
     }
     
     /**

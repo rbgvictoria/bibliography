@@ -24,7 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class AgentType
  * @author Niels Klazenga
  * @ORM\Entity()
- * @ORM\Table(name="agent_type", indexes={
+ * @ORM\Table(indexes={
  *     @ORM\Index(columns={"name"}),
  *     @ORM\Index(columns={"uri"}),
  *     @ORM\Index(columns={"label"}),

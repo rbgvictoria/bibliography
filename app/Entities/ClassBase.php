@@ -37,15 +37,10 @@ class ClassBase
      * @var int
      * @ORM\Id
      * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="global_id_seq")
      */
     protected $id;
-
-    /**
-     * @var string
-     * @ORM\Column(type="guid", nullable=true, unique=true)
-     */
-    protected $guid;
 
     /**
      * @ORM\Column(type="smallint")

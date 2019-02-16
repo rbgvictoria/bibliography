@@ -18,6 +18,7 @@
 
 namespace App\Repositories;
 
+use App\Entities\Reference;
 use Doctrine\ORM\EntityRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use LaravelDoctrine\ORM\Pagination\PaginatesFromParams;
@@ -142,12 +143,13 @@ class ReferenceRepository extends EntityRepository {
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('r')->from('\App\Entities\Reference', 'r')
-                ->join('r.referenceType', 'rt');
+                ->join('r.referenceType', 'rt')
+                ->leftJoin('r.author', 'a');
         $this->parameters = [];
         if (isset($params['filter'])) {
             $qb = $this->searchCriteria($qb, $params['filter']);
         }
-        $qb->addOrderBy('r.contributorsCache');
+        $qb->addOrderBy('a.name');
         $qb->addOrderBy('r.publicationYear');
         $query = $qb->getQuery();
         if ($this->parameters) {
@@ -162,7 +164,7 @@ class ReferenceRepository extends EntityRepository {
     protected function searchCriteria(QueryBuilder $qb, $filters)
     {
         if (isset($filters['author'])) {
-            $qb->andWhere($qb->expr()->like('r.contributorsCache', ':author'));
+            $qb->andWhere($qb->expr()->like('a.name', ':author'));
             $this->parameters['author'] = $filters['author'] . '%';
         }
         if (isset($filters['year'])) {

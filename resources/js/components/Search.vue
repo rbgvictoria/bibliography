@@ -6,7 +6,7 @@
             <author-autocomplete
                 :value="author"
                 :author="author"
-                @authorSelected="onAuthorSelected"
+                @author-selected="onAuthorSelected"
                 >{{ $route.query.author }}</author-autocomplete>
           </div>
 
@@ -132,6 +132,11 @@ export default {
   mounted() {
     if (typeof this.$route.query.author === 'undefined') {
       this.$router.push({name: 'search', query: {author: 'A'}})
+    }
+  },
+  watch: {
+    '$route'(to) {
+      this.$store.dispatch('citations/search', to.query )
     }
   }
 }

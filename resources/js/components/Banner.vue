@@ -37,17 +37,17 @@
 
                 <div class="col-lg-12">
                     <div class="login">
-<!--                        <router-link
+                        <router-link
                             :to="{ name: 'login' }"
-                            v-if="!$store.state.auth"
+                            v-if="!$store.getters['auth/checkAuth']"
                         >Log in</router-link>
                         <span v-else>
-                            {{ $store.state.user.name }} |
+                            {{ $store.getters['auth/getUser'].name }} |
                             <a @click="logout">Log out</a>
                             <form id="logout-form" action="/logout" method="POST" style="display: hidden;">
                                 <input type="hidden" name="_token" :value="csrf_token"/>
                             </form>
-                        </span>-->
+                        </span>
                     </div>
 
                     <div id="header">
@@ -79,7 +79,15 @@
         methods: {
             logout(event) {
                 event.preventDefault();
-                document.getElementById('logout-form').submit();
+                const url = process.env.MIX_APP_URL + '/logout'
+                return axios.post(url, {
+                    _token: token
+                }).then(response => {
+                    console.log('Logged out...')
+                    this.$store.dispatch('auth/deleteAuthenticationInfo')
+                })
+
+                //document.getElementById('logout-form').submit();
             }
         }
     }

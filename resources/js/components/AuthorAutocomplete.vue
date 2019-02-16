@@ -27,7 +27,7 @@
       Autocomplete
     },
     props: {
-      author: String
+      author: String 
     },
     data() {
       return {
@@ -40,11 +40,10 @@
         this.model = val
       },
       onSelected(item) {
-        this.$emit('authorSelected', item)
+        this.$emit('author-selected', item)
       },
       focus ( event, ui ) {
-        $('#author-autocomplete').val( ui.item.name ) // Note: need to
-            // put an id on the <auto-complete> element
+        event.target.value = ui.item.name
         return false;
       },
       renderItem(ul, item) {
@@ -66,5 +65,9 @@
 <style>
   .search-form .input-group-addon {
     cursor: pointer;
+  }
+
+  .author-autocomplete-dropdown {
+    z-index: 10000;
   }
 </style>

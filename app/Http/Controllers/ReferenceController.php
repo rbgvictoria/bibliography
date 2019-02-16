@@ -45,7 +45,7 @@ class ReferenceController extends Controller
      */
     public function show($id)
     {
-        return view('app');
+        return view('app', ['data' => $this->getAuthInfo()]);
     }
 
     /**

@@ -2,7 +2,8 @@ import defaultSchema from './defaultSchema'
 
 const fields = [
   'type',
-  'author',
+  'contributors',
+  'authorString',
   'publicationYear',
   'title',
   'journal',
@@ -11,8 +12,7 @@ const fields = [
   'pageStart',
   'pageEnd',
   'number',
-  'doi',
-  'citationHtml'
+  'doi'
 ]
 
 const articleSchema = defaultSchema.filter(field => fields.indexOf(field.name) > -1)

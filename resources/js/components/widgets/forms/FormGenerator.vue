@@ -7,6 +7,7 @@
         :value="formData[field.name]"
         :labelWidth="field.labelWidth || labelWidth"
         :controlWidth="field.controlWidth || controlWidth"
+        :hide="field.hideInStaticMode || hide"
         @input="updateForm(field.name, $event)"
         @selected="onSelected"
         v-bind="field">
@@ -21,10 +22,11 @@ import TextInput from "./TextInput"
 import StaticControl from "./StaticControl"
 import AutocompleteControl from "./AutocompleteControl"
 import Reference from "../../../models/ReferenceModel"
+import ContributorsSubform from "../../ContributorsSubform"
 
 export default {
   name: "FormGenerator",
-  components: { NumberInput, SelectList, TextInput, StaticControl, AutocompleteControl },
+  components: { NumberInput, SelectList, TextInput, StaticControl, AutocompleteControl, ContributorsSubform },
   props: {
     schema: Array,
     value: Object,
@@ -41,7 +43,8 @@ export default {
   },
   data() {
     return {
-      formData: this.value || {}
+      formData: this.value || {},
+      hide: false
     }
   },
   methods: {

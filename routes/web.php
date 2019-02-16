@@ -11,19 +11,22 @@
 |
 */
 
-Route::get('/', function () {
-    return view('app');
-});
-
-Route::get('/test', function () {
-    return view('app');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'Controller@getHomePage');
 
 Route::resource('references', 'ReferenceController')->only(['index', 'show']);
 
-Route::middleware('auth.api')->resource('references', 'ReferenceController')
-        ->except(['index', 'show']);
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/user', function() {
+        $info = ['auth' => Auth::check()];
+        if (Auth::check()) {
+            $info['user'] = [
+                'id' => Auth::user()->getId(),
+                'name' => Auth::user()->getName()
+            ];
+        }
+        return response()->json($info);
+});
+
